@@ -1,14 +1,10 @@
 import SwiftUI
 
 @main
-struct StoicJournalApp: App {
-    @StateObject private var schemeManager = ColorSchemeManager()
-
+struct Shia: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .environmentObject(schemeManager)
-                .preferredColorScheme(schemeManager.currentColorScheme)
         }
     }
 }

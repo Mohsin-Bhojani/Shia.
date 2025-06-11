@@ -208,3 +208,9 @@ struct QuoteView: View {
     }
 }
 
+// MARK: - Preview
+
+#Preview {
+    HomeView()
+}
+
