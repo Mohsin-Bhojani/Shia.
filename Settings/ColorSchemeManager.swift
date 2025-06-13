@@ -1,33 +1,23 @@
 import SwiftUI
 
 struct ColorSchemeManager {
-    
     static func primary(_ scheme: ColorScheme) -> Color {
         scheme == .dark ? Color("PrimaryDark") : Color("PrimaryLight")
     }
-    
+
     static func secondary(_ scheme: ColorScheme) -> Color {
         scheme == .dark ? Color("SecondaryDark") : Color("SecondaryLight")
     }
 
     static func accent(_ scheme: ColorScheme) -> Color {
-        Color("Accent") // Same in both modes
+        Color("Accent")
     }
 
     static func buttonPrimary(_ scheme: ColorScheme) -> Color {
-        Color("ButtonPrimary") // Same in both modes
+        scheme == .dark ? .white : .blue
     }
 
-    static func buttonSecondary(_ scheme: ColorScheme) -> Color {
-        Color("ButtonSecondary") // Same in both modes
-    }
-
-    static func error(_ scheme: ColorScheme) -> Color {
-        Color("Error") // Same in both modes
-    }
-
-    static func success(_ scheme: ColorScheme) -> Color {
-        Color("Success") // Same in both modes
+    static func menuInactive(_ scheme: ColorScheme) -> Color {
+        scheme == .dark ? Color.white.opacity(0.6) : Color.black.opacity(0.6)
     }
 }
-
