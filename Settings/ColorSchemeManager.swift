@@ -13,11 +13,15 @@ struct ColorSchemeManager {
         Color("Accent")
     }
 
-    static func buttonPrimary(_ scheme: ColorScheme) -> Color {
-        scheme == .dark ? .white : .blue
+    static func button(_ scheme: ColorScheme) -> Color {
+        scheme == .dark ? Color("ButtonDark") : Color("ButtonLight")
     }
 
-    static func menuInactive(_ scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color.white.opacity(0.6) : Color.black.opacity(0.6)
+    static func textPrimary(_ scheme: ColorScheme) -> Color {
+        scheme == .dark ? Color.white : Color.black
+    }
+
+    static func textSecondary(_ scheme: ColorScheme) -> Color {
+        scheme == .dark ? Color.gray : Color.gray.opacity(0.7)
     }
 }
