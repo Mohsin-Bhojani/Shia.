@@ -1,10 +1,11 @@
 import SwiftUI
 
 @main
-struct Shia: App {
+struct ShiaApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            ContentView()
         }
     }
 }
+
