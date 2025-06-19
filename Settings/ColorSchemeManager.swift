@@ -2,26 +2,38 @@ import SwiftUI
 
 struct ColorSchemeManager {
     static func primary(_ scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color("PrimaryDark") : Color("PrimaryLight")
+        Color("Primary")
     }
 
     static func secondary(_ scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color("SecondaryDark") : Color("SecondaryLight")
+        Color("Secondary")
     }
 
     static func accent(_ scheme: ColorScheme) -> Color {
-        Color("Accent")
+        Color("AccentColor")
     }
 
     static func button(_ scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color("ButtonDark") : Color("ButtonLight")
+        Color("ButtonPrimary")
     }
 
     static func textPrimary(_ scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color.white : Color.black
+        Color.primary // dynamic system color
     }
 
     static func textSecondary(_ scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color.gray : Color.gray.opacity(0.7)
+        Color.secondary // dynamic system color
     }
+
+    static func success(_ scheme: ColorScheme) -> Color {
+        Color("Success")
+    }
+
+    static func error(_ scheme: ColorScheme) -> Color {
+        Color("Error")
+    }
+}
+
+enum ThemeMode: String, CaseIterable {
+    case light, dark, system
 }
