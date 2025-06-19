@@ -1,12 +1,10 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.colorScheme) var colorScheme
     @State private var notificationsEnabled = true
     @State private var appLockEnabled = false
-    @State private var themeSelection = "System"
-
-    let themes = ["Light", "Dark", "System"]
+    @AppStorage("selectedTheme") private var selectedTheme: String = ThemeMode.system.rawValue
+    @Environment(\.colorScheme) var systemColorScheme
 
     var body: some View {
         ScrollView {
@@ -35,9 +33,10 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundColor(.gray)
 
-                    Picker("App Theme", selection: $themeSelection) {
-                        ForEach(themes, id: \.self) { theme in
-                            Text(theme)
+                    Picker("App Theme", selection: $selectedTheme) {
+                        ForEach(ThemeMode.allCases, id: \.self) { theme in
+                            Text(theme.rawValue.capitalized)
+                                .tag(theme.rawValue)
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
@@ -69,10 +68,8 @@ struct SettingsView: View {
             }
             .padding()
             .frame(maxWidth: 600)
-            .background(ColorSchemeManager.primary(colorScheme))
-            .foregroundColor(ColorSchemeManager.textPrimary(colorScheme))
         }
         .navigationTitle("Settings")
-        .background(ColorSchemeManager.primary(colorScheme))
     }
 }
+
