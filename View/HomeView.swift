@@ -4,12 +4,12 @@ struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var selectedMenu: String = "Home"
     @State private var isSidebarCollapsed: Bool = false
-
+    
     var body: some View {
         GeometryReader { geometry in
             let isWide = geometry.size.width > 700
             let useCapsuleMenu = isSidebarCollapsed || !isWide
-
+            
             ZStack(alignment: .bottom) {
                 HStack(spacing: 0) {
                     // Sidebar (visible only if not collapsed and wide)
@@ -34,36 +34,37 @@ struct HomeView: View {
                             ForEach(menuItems, id: \.title) { item in
                                 SidebarButton(
                                     title: item.title,
-                                    systemImage: item.icon,
                                     isSelected: selectedMenu == item.title
                                 ) {
                                     selectedMenu = item.title
                                 }
                             }
-
+                            
                             Spacer()
                         }
                         .padding()
                         .frame(width: 240)
                         .background(Color(.systemGray6))
                     }
-
+                    
                     Divider()
-
+                    
                     // Main Content
                     ScrollView {
                         Group {
                             switch selectedMenu {
-                            case "Home":
-                                HomeContentView()
-                            case "Insights":
-                                Text("Insights View Placeholder")
-                            case "Journal":
-                                Text("Journal View Placeholder")
-                            case "Settings":
-                                SettingsView()
-                            default:
-                                HomeContentView()
+                                case "Home":
+                                    HomeContentView()
+                                case "Insights":
+                                    Text("Insights View Placeholder")
+                                case "Journal":
+                                    Text("Journal View Placeholder")
+                                case "Library":
+                                    LibraryView()
+                                case "Settings":
+                                    SettingsView()
+                                default:
+                                    HomeContentView()
                             }
                         }
                         .frame(maxWidth: min(geometry.size.width * 0.9, 600))
@@ -72,7 +73,7 @@ struct HomeView: View {
                     }
                     .background(ColorSchemeManager.primary(colorScheme).ignoresSafeArea())
                 }
-
+                
                 // Floating Capsule Menu
                 if useCapsuleMenu {
                     CapsuleMenu(
@@ -89,11 +90,12 @@ struct HomeView: View {
             }
         }
     }
-
+    
     var menuItems: [MenuItem] = [
         .init(title: "Home", icon: "house"),
         .init(title: "Insights", icon: "chart.bar"),
         .init(title: "Journal", icon: "book.closed"),
+        .init(title: "Library", icon: "books.vertical"), // 📚 ADDED
         .init(title: "Settings", icon: "gear")
     ]
 }
@@ -107,21 +109,17 @@ struct MenuItem {
 
 struct SidebarButton: View {
     var title: String
-    var systemImage: String
     var isSelected: Bool
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            HStack {
-                Image(systemName: systemImage)
-                Text(title)
-            }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 12)
-            .foregroundColor(isSelected ? .accentColor : .primary)
-            .background(isSelected ? Color.accentColor.opacity(0.15) : .clear)
-            .cornerRadius(12)
+            Text(title)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .foregroundColor(isSelected ? .accentColor : .primary)
+                .background(isSelected ? Color.accentColor.opacity(0.15) : .clear)
+                .cornerRadius(12)
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -154,7 +152,6 @@ struct HomeContentView: View {
     }
 }
 
-
 // MARK: - CapsuleMenu View
 
 struct CapsuleMenu: View {
@@ -163,27 +160,30 @@ struct CapsuleMenu: View {
     var toggleSidebar: () -> Void
 
     var body: some View {
-        HStack(spacing: 32) {
-            ForEach(menuItems, id: \.title) { item in
-                VStack(spacing: 4) {
-                    Image(systemName: item.icon)
-                        .font(.system(size: 18))
-                    Text(item.title)
-                        .font(.caption2)
-                }
-                .foregroundColor(selectedMenu == item.title ? .accentColor : .primary)
-                .padding(8)
-                .onTapGesture {
-                    selectedMenu = item.title
-                }
-            }
-
-            Divider().frame(height: 24)
-
-            // Collapse/Expand Toggle Button
+        HStack(spacing: 16) {
+            // Sidebar open button on the left
             Button(action: toggleSidebar) {
                 Image(systemName: "sidebar.left")
                     .font(.system(size: 18))
+                    .foregroundColor(.primary)
+                    .padding(8)
+                    .background(Color(.systemGray5))
+                    .clipShape(Circle())
+            }
+
+            ForEach(menuItems, id: \.title) { item in
+                Text(item.title)
+                    .font(.caption)
+                    .foregroundColor(selectedMenu == item.title ? .accentColor : .gray)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .background(
+                        selectedMenu == item.title ? Color(.systemGray5) : Color.clear
+                    )
+                    .clipShape(Capsule())
+                    .onTapGesture {
+                        selectedMenu = item.title
+                    }
             }
         }
         .padding(.horizontal, 20)

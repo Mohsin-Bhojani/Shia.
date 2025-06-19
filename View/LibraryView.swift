@@ -1,32 +1,32 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @State private var searchText = ""
-    @State private var books: [Book] = Book.sampleData
+    @State private var searchText: String = ""
+    private var books: [Book] = Book.sampleBooks
 
     var filteredBooks: [Book] {
-        searchText.isEmpty ? books : books.filter {
-            $0.title.localizedCaseInsensitiveContains(searchText) ||
-            $0.author.localizedCaseInsensitiveContains(searchText)
+        if searchText.isEmpty {
+            return books
+        } else {
+            return books.filter {
+                $0.title.localizedCaseInsensitiveContains(searchText) ||
+                $0.author.localizedCaseInsensitiveContains(searchText)
+            }
         }
     }
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 120), spacing: 16)], spacing: 20) {
-                    ForEach(filteredBooks) { book in
-                        NavigationLink(destination: BookReaderView(book: book)) {
-                            BookCard(book: book)
-                        }
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: 16)], spacing: 20) {
+                ForEach(filteredBooks) { book in
+                    NavigationLink(destination: BookReaderView(book: book)) {
+                        BookCard(book: book)
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
-                .padding()
             }
-            .navigationTitle("Library")
-            .searchable(text: $searchText)
-            .background(ColorSchemeManager.primary(colorScheme))
+            .padding()
         }
+        .searchable(text: $searchText)
     }
 }
